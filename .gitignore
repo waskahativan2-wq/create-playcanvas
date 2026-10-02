@@ -4,6 +4,7 @@ bower_components/
 
 # Build outputs
 dist/
+dist-app/
 build/
 out/
 .next/

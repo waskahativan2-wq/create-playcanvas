@@ -35,11 +35,22 @@
     "scripts": {
         "build": "unbuild",
         "dev": "unbuild --stub",
-        "fmt": "prettier --check .",
-        "fmt:fix": "prettier --write .",
-        "lint": "eslint .",
-        "lint:fix": "eslint . --fix",
-        "typecheck": "tsc --noEmit"
+        "fmt": "prettier --check . --ignore-path .prettierignore.tool",
+        "fmt:fix": "prettier --write . --ignore-path .prettierignore.tool",
+        "lint": "eslint . --no-config-lookup --config eslint.config.tool.mjs",
+        "lint:fix": "eslint . --no-config-lookup --config eslint.config.tool.mjs --fix",
+        "typecheck": "tsc --noEmit -p tsconfig.tool.json",
+        "app:build": "vite build",
+        "app:dev": "vite",
+        "app:fmt": "prettier --check . --config prettier.config.app.mjs",
+        "app:fmt:fix": "prettier --write . --config prettier.config.app.mjs",
+        "app:lint": "eslint . --config eslint.config.app.mjs",
+        "app:lint:fix": "eslint . --config eslint.config.app.mjs --fix",
+        "app:start": "vite preview",
+        "app:typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "playcanvas": "^2.23.0"
     },
     "devDependencies": {
         "@clack/prompts": "^1.8.1",
@@ -49,7 +60,9 @@
         "mri": "^1.2.0",
         "picocolors": "^1.1.1",
         "prettier": "^3.9.9",
-        "unbuild": "^3.6.1"
+        "typescript": "~6.0.3",
+        "unbuild": "^3.6.1",
+        "vite": "^8.3.1"
     },
     "engines": {
         "node": ">=22.23.2"

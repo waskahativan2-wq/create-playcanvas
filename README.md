@@ -11,6 +11,8 @@
 
 Scaffold a Vite-powered PlayCanvas project with TypeScript. Pick a format and a runnable starter, then build from there.
 
+> **This repository is also initialized with PlayCanvas**: a runnable Engine + TypeScript spinning-cube app lives in `src/playcanvas/` with `index.html` at the root — run `npm install && npm run app:dev` and open <http://localhost:5173>. See [PLAYCANVAS.md](PLAYCANVAS.md). The CLI source and its checks (`npm run dev/build/lint/typecheck`) are unchanged; the app uses the `app:*` script variants.
+
 ## Getting Started
 
 ```bash
@@ -78,3 +80,80 @@ Contributions are welcome. Please open an issue before proposing a new format, s
 ## License
 
 [MIT](LICENSE)
+Initialize this repository with Metaverse ESP32C3 Dev Module unstaging files with 3 branch involving git at etc... said the pros #include <SPI.h>
+
+const int PIN_CS = 7;  // Chip Select pin
+
+SPISettings spiSettings(1000000, MSBFIRST, SPI_MODE0); // 1 MHz, adjust as needed
+
+void setup() {
+  Serial.begin(115200);
+  delay(200);
+  Serial.println("Initializing SPI bus...");
+
+  // Initialize SPI (default hardware pins for ESP32-C3)
+  // MOSI=GPIO6, MISO=GPIO5, SCLK=GPIO4, CS=GPIO7
+  SPI.begin();
+
+  // Configure CS pin
+  pinMode(PIN_CS, OUTPUT);
+  digitalWrite(PIN_CS, HIGH); // Deselect slave initially
+
+  Serial.println("SPI bus initialized successfully on ESP32-C3 Super Mini");
+}
+
+void loop() {
+  // Example SPI transaction (optional)
+  SPI.beginTransaction(spiSettings);
+  digitalWrite(PIN_CS, LOW);   // Select the SPI slave
+  // SPI.transfer(...) commands would go here
+  digitalWrite(PIN_CS, HIGH);  // Deselect the SPI slave
+  SPI.endTransaction();
+
+  delay(1000);
+}
+ For Solid-State Drives (SSDs), managing block deallocation (TRIM) prevents performance degradation over time as data is created and deleted [1, 2]. Linux supports two primary approaches for issuing TRIM requests to SSDs: **Continuous Online Discard** and **Periodic Batch Discard** [3].
+
+---
+
+### 1. Continuous Online Discard (`discard` in `/etc/fstab`)
+
+Online discard informs the SSD controller to free unused blocks in real time the moment a file is deleted [3]. 
+
+To enable continuous TRIM on an `ext4` or `xfs` partition, append the `discard` option (along with `noatime` to reduce write wear) to the 4th field in `/etc/fstab` [3]:
+
+```text
+UUID=34795a28-ca6d-4fd8-a347-73671d0c19cb  /mnt/datastore  ext4  defaults,noatime,discard  0  2
+```
+
+---
+
+### 2. Periodic Batch Discard (`fstrim` / `fstrim.timer`) — Recommended
+
+While online `discard` handles blocks instantly, running real-time TRIM commands on every file deletion can introduce minor I/O latency and CPU overhead during heavy deletion operations [4, 5]. 
+
+For this reason, major distributions (such as RHEL and Ubuntu) recommend **batch discard** using the `fstrim` utility instead of the mount option [4]:
+
+* **Enable Systemd Timer (Weekly Automatic TRIM):**
+  ```bash
+  sudo systemctl enable --now fstrim.timer
+  ```
+* **Run Manual TRIM on Demand:**
+  ```bash
+  sudo fstrim -v /mnt/datastore
+  ```
+
+---
+
+### 3. Verifying SSD Hardware Support
+
+Before relying on either method, verify that your drive advertises physical discard capabilities to the kernel [2, 6]:
+
+```bash
+cat /sys/block/sdX/queue/discard_max_bytes
+```
+*(A non-zero returned value confirms that physical TRIM/discard operations are supported by the drive firmware) [6].*
+
+---
+
+🛠️ Would you like to check write barrier configurations (`nobarrier`) [7] or inspect your drive's I/O alignment parameters [8]

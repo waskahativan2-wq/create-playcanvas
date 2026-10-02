@@ -1,15 +1,25 @@
 {
-    "include": ["build.config.ts", "src", "__tests__"],
     "compilerOptions": {
-        "outDir": "dist",
         "target": "ES2022",
-        "module": "ES2020",
-        "moduleResolution": "bundler",
-        "strict": true,
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
         "skipLibCheck": true,
-        "declaration": false,
-        "sourceMap": false,
+
+        /* Bundler mode */
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
+        "moduleDetection": "force",
+        "noEmit": true,
+
+        /* Linting */
+        "strict": true,
         "noUnusedLocals": true,
-        "esModuleInterop": true
-    }
+        "noUnusedParameters": true,
+        "erasableSyntaxOnly": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedSideEffectImports": true
+    },
+    "include": ["src/playcanvas", "vite.config.ts"]
 }
