@@ -11,6 +11,8 @@
 
 Scaffold a Vite-powered PlayCanvas project with TypeScript. Pick a format and a runnable starter, then build from there.
 
+> **This repository is also initialized with PlayCanvas**: a runnable Engine + TypeScript spinning-cube app lives in `src/playcanvas/` with `index.html` at the root — run `npm install && npm run app:dev` and open <http://localhost:5173>. See [PLAYCANVAS.md](PLAYCANVAS.md). The CLI source and its checks (`npm run dev/build/lint/typecheck`) are unchanged; the app uses the `app:*` script variants.
+
 ## Getting Started
 
 ```bash

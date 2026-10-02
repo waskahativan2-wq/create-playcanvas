@@ -1,3 +1,10 @@
-skills
+.claude
+.agents
+public/ammo
+
+# the create-playcanvas CLI's own files (checked via the tool scripts, which use .prettierignore.tool)
 dist
+dist-app
+skills
 templates/_features/physics/assets/public/ammo
+prettier.config.tool.mjs
